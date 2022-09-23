@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 // import {v4 as uuidv4} from "uuid"
+
+// get data from local storage
+const getLsTodos = () => {
+  let list = localStorage.getItem('todolist');
+  console.log(list);
+
+  if(list){
+    return JSON.parse(localStorage.getItem('todolist'));
+  }else {
+    return [];
+  }
+}
+
+
 
 function App() {
 
 const [todo, setTodo] = useState("");
-const [todos, setTodos] = useState([]);
+const [todos, setTodos] = useState(getLsTodos());
 const [editId, setEditId] = useState(0);
 
 const handleSubmit = (e) => {
@@ -44,6 +58,12 @@ const handleEdit = (id) => {
     setTodo(editTodo.todo);
     setEditId(id);
 }
+
+// Add data to local storage
+useEffect(() => {
+  localStorage.setItem("todolist", JSON.stringify(todos))
+}, [todos])
+
 
   return (
     <div className="App">
